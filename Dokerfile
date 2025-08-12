@@ -1,0 +1,11 @@
+# Gunakan image resmi n8n sebagai base
+FROM n8nio/n8n:latest
+
+# Jalankan sebagai root untuk install paket
+USER root
+
+# Install FFmpeg
+RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
+
+# Kembali ke user default n8n
+USER node

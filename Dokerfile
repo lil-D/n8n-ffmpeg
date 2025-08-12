@@ -1,11 +1,17 @@
-# Gunakan image resmi n8n sebagai base
-FROM n8nio/n8n:latest
+# Gunakan image Node dengan Debian (supaya bisa apt-get)
+FROM node:20-bullseye
 
-# Jalankan sebagai root untuk install paket
-USER root
+# Install ffmpeg
+RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
-# Install FFmpeg
-RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
+# Install n8n
+RUN npm install -g n8n
 
-# Kembali ke user default n8n
-USER node
+# Set folder kerja
+WORKDIR /data
+
+# Expose port default n8n
+EXPOSE 5678
+
+# Jalankan n8n
+CMD ["n8n", "start"]
